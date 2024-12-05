@@ -1,3 +1,4 @@
+
 """
 Django settings for djangojokes project.
 
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Local apps
+    'pages.apps.PagesConfig',
 ]
 
 MIDDLEWARE = [

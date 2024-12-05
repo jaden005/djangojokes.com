@@ -1,3 +1,4 @@
+
 # djangojokes.com
 Django Jokes Website
 ## Practice Site for Learning Django
