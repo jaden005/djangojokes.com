@@ -1,4 +1,5 @@
 
+from django.contrib import messages
 from django.views.generic import TemplateView
 
 class HomePageView(TemplateView):
@@ -6,3 +7,4 @@ class HomePageView(TemplateView):
 
 class AboutUsView(TemplateView):
     template_name = 'pages/about_us.html'
+    
