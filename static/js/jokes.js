@@ -1,13 +1,13 @@
 
 window.addEventListener('load', () => {
     if (document.getElementById('like-button')) { // If like button exists?
-        const likeButton = document.getElementById('like-button');
-        const dislikeButton = document.getElementById('dislike-button');
-        likeButton.addEventListener('click', () => { register(1); })
-        dislikeButton.addEventListener('click', () => { register(-1); })
+      const likeButton = document.getElementById('like-button');
+      const dislikeButton = document.getElementById('dislike-button');
+      likeButton.addEventListener('click', () => { register(1); })
+      dislikeButton.addEventListener('click', () => { register(-1); })
     }
-})
-
+  })
+  
 function register(vote) {
     const csrfInput =  document.querySelector("input[name='csrfmiddlewaretoken']");
     const csrfToken = csrfInput.value;
@@ -17,7 +17,7 @@ function register(vote) {
         'vote': vote,
         'likes': likes,
         'dislikes': dislikes
-}
+    }
 fetch(ajaxURL, {
     method: 'POST',
     headers: {
@@ -25,7 +25,7 @@ fetch(ajaxURL, {
     'X-CSRFToken': csrfToken
     },
     body: JSON.stringify(data),
-})
+    })
     .then(response => response.json())
     .then(data => {
     const numVotes = data.dislikes + data.likes;
