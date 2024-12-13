@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'private_storage',
 
     # Local apps
     'common.apps.CommonConfig',
@@ -157,7 +156,7 @@ ACCOUNT_EMAIL_REQUIRED = True # Default: False
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # Default: 'optional'
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5 # Default: 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300 # Default 300
-ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login' # Default: '/'
+ACCOUNT_LOGOUT_REDIRECT_URL ='account_login' # Default: '/'
 ACCOUNT_USERNAME_REQUIRED = False # Default: True
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 
@@ -178,23 +177,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'djangobucketjaden' # REPLACE WITH YOUR BUCKET NAME
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_DEFAULT_ACL = None # Use S3 bucket's setting
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_S3_REGION_NAME = 'us-east-2'  # REPLACE WITH YOUR BUCKET REGION
+
+STATICFILES_STORAGE = 'djangojokes.storage_backends.StaticStorage'
+DEFAULT_FILE_STORAGE = 'djangojokes.storage_backends.PublicMediaStorage'
+PRIVATE_FILE_STORAGE = 'djangojokes.storage_backends.PrivateMediaStorage'
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-# private-storage settings
-PRIVATE_STORAGE_ROOT = MEDIA_ROOT / 'private/'
-PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # BOTTOM OF settings.py
 if os.environ.get('ENVIRONMENT') != 'production':
