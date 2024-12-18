@@ -18,6 +18,9 @@ class CustomUser(AbstractUser):
     def get_absolute_url(self):
         return reverse('my-account')
     
+    def __str__(self):
+        return f'{self.first_name} {self.last_name} ({self.username})'
+    
     avatar = models.ImageField(upload_to='avatars/', blank=True,
         help_text='Image must be 200px by 200px.',
         validators=[validate_avatar]

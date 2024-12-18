@@ -19,6 +19,10 @@ class CategoryAdmin(admin.ModelAdmin):
 class JokeAdmin(DjangoJokesAdmin):
     model = Joke
 
+    # Form Attributes
+    autocomplete_fields = ['tags', 'user']
+    radio_fields = { 'category': admin.HORIZONTAL}
+
     # List Attributes
     date_hierarchy = 'updated'
     list_display = ['question', 'category', 'updated']
@@ -28,13 +32,17 @@ class JokeAdmin(DjangoJokesAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj: # editing an existing object
-            return ('slug', 'created', 'updated')
+            return ('slug', 'created', 'updated', 'vote_summary')
         return ()
+    
+    def vote_summary(self, obj):
+        return f'{obj.num_votes} votes. Rating: {obj.rating}.'
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     model = Tag
     list_display = ['tag', 'created', 'updated']
+    search_fields = ['tag']
 
     def get_readonly_fields(self, request, obj=None):
         if obj: # editing an existing object
